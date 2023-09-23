@@ -23,18 +23,35 @@ let playRound = (param1, param2) => {
 
   if (computerSelection === userSelection) {
     console.log("it's a tie!");
-    result = "tie";
+    return "tie";
   } else if (
     (computerSelection === "rock" && userSelection === "paper") ||
     (computerSelection === "paper" && userSelection === "scissors") ||
     (computerSelection === "scissors" && userSelection === "rock")
   ) {
     console.log(`You Win! ${userSelection} beats ${computerSelection}`);
-    result = "user";
+    return "user";
   } else {
     console.log(`You Lose! ${computerSelection} beats ${userSelection}`);
-    result = "computer";
+    return "computer";
   }
 };
 
-playRound();
+//5 rounds of the game and the final result function
+let game = () => {
+  let i = 1;
+  let user = 0;
+  let computer = 0;
+  while (i < 6) {
+    let result = playRound();
+    result === "user" ? (user += 1) : (computer += 1);
+    i++;
+  }
+  user > computer
+    ? console.log("You are the champ!")
+    : computer > user
+    ? console.log("Better luck next time!")
+    : console.log("This round's tied!");
+};
+
+game();
