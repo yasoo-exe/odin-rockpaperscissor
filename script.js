@@ -19,8 +19,6 @@ let playRound = (param1, param2) => {
     getuserChoice(),
   ];
 
-  let result = "";
-
   if (computerSelection === userSelection) {
     console.log("it's a tie!");
     return "tie";
@@ -42,9 +40,14 @@ let game = () => {
   let i = 1;
   let user = 0;
   let computer = 0;
-  while (i < 6) {
+  let tie = 0;
+  while (computer < 5 && user < 5) {
     let result = playRound();
-    result === "user" ? (user += 1) : (computer += 1);
+    result === "user"
+      ? (user += 1)
+      : result === "computer"
+      ? (computer += 1)
+      : (tie += 1);
     i++;
   }
   user > computer
