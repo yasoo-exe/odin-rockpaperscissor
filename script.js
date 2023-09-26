@@ -8,6 +8,11 @@ let getComputerChoice = () => {
 function playRound() {
   let userPoints = 0;
   let computerPoints = 0;
+  let result = document.querySelector(".result");
+  let final = document.querySelector(".final");
+  let reset = document.querySelector(".reset");
+  let liveuser = document.querySelector(".liveuser");
+  let livecomp = document.querySelector(".livecomp");
   return function () {
     if (userPoints < 5 && computerPoints < 5) {
       //assign user and computer selection to variables using destructuring
@@ -15,8 +20,6 @@ function playRound() {
         getComputerChoice(),
         this.innerText.toLowerCase(),
       ];
-
-      let result = document.querySelector(".result");
 
       if (computerSelection === userSelection) {
         result.innerText = "it's a tie!";
@@ -26,31 +29,33 @@ function playRound() {
         (computerSelection === "scissors" && userSelection === "rock")
       ) {
         userPoints += 1;
+        liveuser.innerText = userPoints;
         result.innerText = `You Win! ${userSelection} beats ${computerSelection}`;
       } else {
         computerPoints += 1;
+        livecomp.innerText = computerPoints;
         result.innerText = `You Lose! ${computerSelection} beats ${userSelection}`;
       }
     }
 
     if (userPoints === 5 || computerPoints === 5) {
-      document.querySelector(".final").innerText = `${
+      final.innerText = `${
         userPoints > computerPoints ? "YOU WIN!" : "YOU LOST!"
       }`;
-      document.querySelector(".reset").style.display = "block";
-      document.querySelector(".reset").addEventListener("click", () => {
-        userPoints = 0;
-        computerPoints = 0;
-        document.querySelector(".result").innerText = "";
-        document.querySelector(".final").innerText = "";
-        document.querySelector(".reset").style.display = "none";
+      reset.style.display = "block";
+      reset.addEventListener("click", () => {
+        final.innerText = result.innerText = "";
+        reset.style.display = "none";
+        userPoints =
+          computerPoints =
+          liveuser.innerText =
+          livecomp.innerText =
+            0;
       });
     }
   };
 }
 
 let play = playRound();
-
 let buttons = document.querySelectorAll("div[class='choices'] button");
-
 Array.from(buttons).forEach((ele) => ele.addEventListener("click", play));
