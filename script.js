@@ -4,57 +4,53 @@ let getComputerChoice = () => {
   return choices[Math.floor(Math.random() * 3)];
 };
 
-//get user's choice
-let getuserChoice = () => {
-  let choiceMade = prompt(
-    "Enter your choice (rock/paper/scissors):"
-  ).toLowerCase();
-  return choiceMade;
-};
+// play a round
+function playRound() {
+  let userPoints = 0;
+  let computerPoints = 0;
+  return function () {
+    if (userPoints < 5 && computerPoints < 5) {
+      //assign user and computer selection to variables using destructuring
+      let [computerSelection, userSelection] = [
+        getComputerChoice(),
+        this.innerText.toLowerCase(),
+      ];
 
-//play a round
-let playRound = (param1, param2) => {
-  let [computerSelection, userSelection] = [
-    getComputerChoice(),
-    getuserChoice(),
-  ];
+      let result = document.querySelector(".result");
 
-  if (computerSelection === userSelection) {
-    console.log("it's a tie!");
-    return "tie";
-  } else if (
-    (computerSelection === "rock" && userSelection === "paper") ||
-    (computerSelection === "paper" && userSelection === "scissors") ||
-    (computerSelection === "scissors" && userSelection === "rock")
-  ) {
-    console.log(`You Win! ${userSelection} beats ${computerSelection}`);
-    return "user";
-  } else {
-    console.log(`You Lose! ${computerSelection} beats ${userSelection}`);
-    return "computer";
-  }
-};
+      if (computerSelection === userSelection) {
+        result.innerText = "it's a tie!";
+      } else if (
+        (computerSelection === "rock" && userSelection === "paper") ||
+        (computerSelection === "paper" && userSelection === "scissors") ||
+        (computerSelection === "scissors" && userSelection === "rock")
+      ) {
+        userPoints += 1;
+        result.innerText = `You Win! ${userSelection} beats ${computerSelection}`;
+      } else {
+        computerPoints += 1;
+        result.innerText = `You Lose! ${computerSelection} beats ${userSelection}`;
+      }
+    }
 
-//5 rounds of the game and the final result function
-let game = () => {
-  let i = 1;
-  let user = 0;
-  let computer = 0;
-  let tie = 0;
-  while (computer < 5 && user < 5) {
-    let result = playRound();
-    result === "user"
-      ? (user += 1)
-      : result === "computer"
-      ? (computer += 1)
-      : (tie += 1);
-    i++;
-  }
-  user > computer
-    ? console.log("You are the champ!")
-    : computer > user
-    ? console.log("Better luck next time!")
-    : console.log("This round's tied!");
-};
+    if (userPoints === 5 || computerPoints === 5) {
+      document.querySelector(".final").innerText = `${
+        userPoints > computerPoints ? "YOU WIN!" : "YOU LOST!"
+      }`;
+      document.querySelector(".reset").style.display = "block";
+      document.querySelector(".reset").addEventListener("click", () => {
+        userPoints = 0;
+        computerPoints = 0;
+        document.querySelector(".result").innerText = "";
+        document.querySelector(".final").innerText = "";
+        document.querySelector(".reset").style.display = "none";
+      });
+    }
+  };
+}
 
-game();
+let play = playRound();
+
+let buttons = document.querySelectorAll("div[class='choices'] button");
+
+Array.from(buttons).forEach((ele) => ele.addEventListener("click", play));
