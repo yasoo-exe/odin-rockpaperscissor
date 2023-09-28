@@ -16,10 +16,8 @@ function playRound() {
   return function () {
     if (userPoints < 5 && computerPoints < 5) {
       //assign user and computer selection to variables using destructuring
-      let [computerSelection, userSelection] = [
-        getComputerChoice(),
-        this.innerText.toLowerCase(),
-      ];
+      let [computerSelection, userSelection] = [getComputerChoice(), this.alt];
+      console.log(computerSelection, userSelection);
 
       if (computerSelection === userSelection) {
         result.innerText = "it's a tie!";
@@ -39,12 +37,12 @@ function playRound() {
     }
 
     if (userPoints === 5 || computerPoints === 5) {
-      final.innerText = `${
+      result.innerText = `${
         userPoints > computerPoints ? "YOU WIN!" : "YOU LOST!"
       }`;
-      reset.style.display = "block";
+      reset.style.display = "flex";
       reset.addEventListener("click", () => {
-        final.innerText = result.innerText = "";
+        result.innerText = "";
         reset.style.display = "none";
         userPoints =
           computerPoints =
@@ -57,5 +55,5 @@ function playRound() {
 }
 
 let play = playRound();
-let buttons = document.querySelectorAll("div[class='choices'] button");
+let buttons = document.querySelectorAll("div[class='choices'] img");
 Array.from(buttons).forEach((ele) => ele.addEventListener("click", play));
